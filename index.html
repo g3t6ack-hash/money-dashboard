@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10121f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Money Plan">
+  <title>Greg's Money Dashboard</title>
+  <style>
+    :root{
+      --bg:#10121f;--panel:#171a2b;--panel2:#1d2136;--text:#f6f7fb;--muted:#9aa3bd;
+      --line:#2b3150;--accent:#7b52ff;--pink:#ff4fa3;--peach:#ff9b7d;--blue:#48b7ff;--teal:#51dccd;
+      --danger:#ff6b7d;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#0e1020,#121526 42%,#0f1220);
+      color:var(--text);
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:20px 16px calc(32px + env(safe-area-inset-bottom))}
+    .hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+    .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+    h1{font-size:clamp(28px,7vw,44px);margin:6px 0 4px;letter-spacing:.04em}
+    .sub{color:var(--muted);font-size:14px}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#14182a;font-size:13px;white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}
+    .card{background:linear-gradient(180deg,var(--panel),#141726);border:1px solid var(--line);border-radius:22px;padding:18px}
+    .card h2{margin:0 0 14px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#cbd2e8}
+    .topline{display:flex;justify-content:space-between;align-items:end;gap:12px}
+    .big{font-size:40px;font-weight:800;letter-spacing:-.03em}
+    .small{font-size:12px;color:var(--muted)}
+    .ringwrap{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:center}
+    svg{width:100%;height:auto}
+    .controls{display:grid;gap:14px}
+    .rowhead{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin-bottom:6px}
+    input[type=range]{width:100%;accent-color:var(--accent)}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+    .kpi{border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--panel2)}
+    .kpi .v{font-size:24px;font-weight:800;margin-top:4px}
+    .check{display:grid;gap:12px}
+    .check label{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+    .check input{width:19px;height:19px;margin-top:1px}
+    .score{font-size:34px;font-weight:800}
+    .status{margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#13172a;font-size:13px}
+    .buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button{appearance:none;border:1px solid var(--line);background:#202642;color:var(--text);padding:11px 14px;border-radius:13px;font-weight:700;font-size:14px}
+    button.primary{background:linear-gradient(90deg,var(--accent),#9658ff);border-color:transparent}
+    .progress{height:10px;background:#252b46;border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress>span{display:block;height:100%;border-radius:999px}
+    .goalgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .goal{border:1px solid var(--line);border-radius:16px;padding:13px}
+    .goal b{display:block;font-size:14px}
+    .goal span{font-size:12px;color:var(--muted)}
+    .footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;margin-top:18px}
+    @media(max-width:760px){
+      .grid{grid-template-columns:1fr}
+      .ringwrap{grid-template-columns:1fr}
+      .ringwrap .donut{max-width:230px;margin:0 auto}
+      .goalgrid{grid-template-columns:1fr}
+      .pill{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Weekly money plan</div>
+      <h1>Greg's Money Dashboard</h1>
+      <div class="sub">Save • invest • build • grow</div>
+    </div>
+    <div class="pill">Saturday check-in</div>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="topline">
+        <div>
+          <div class="small">Weekly income target</div>
+          <div class="big">$<span id="incomeVal">720</span></div>
+        </div>
+        <div style="text-align:right">
+          <div class="small">Unallocated</div>
+          <div style="font-size:24px;font-weight:800" id="leftVal">$0</div>
+        </div>
+      </div>
+
+      <div class="ringwrap" style="margin-top:16px">
+        <div class="donut">
+          <svg viewBox="0 0 220 220" aria-label="Weekly budget donut chart">
+            <circle cx="110" cy="110" r="78" fill="none" stroke="#252b46" stroke-width="30"/>
+            <g id="segments" transform="rotate(-90 110 110)"></g>
+            <text x="110" y="103" text-anchor="middle" fill="#9aa3bd" font-size="13">Allocated</text>
+            <text id="allocVal" x="110" y="132" text-anchor="middle" fill="#f6f7fb" font-size="28" font-weight="800">$720</text>
+          </svg>
+        </div>
+        <div class="controls" id="controls"></div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="small">Savings / week</div>
+          <div class="v" id="saveWeek">$150</div>
+          <div class="small" id="saveYear">$7,800/yr</div>
+        </div>
+        <div class="kpi">
+          <div class="small">VOO / week</div>
+          <div class="v" id="vooWeek">$40</div>
+          <div class="small" id="vooYear">$2,080/yr</div>
+        </div>
+      </div>
+
+      <div class="status" id="status">Every dollar has a job.</div>
+      <div class="buttons">
+        <button class="primary" id="savePlan">Save changes</button>
+        <button id="resetPlan">Reset</button>
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2>Saturday check-in</h2>
+      <div class="check" id="checklist">
+        <label><input type="checkbox"><span>Stayed within the bill reserve</span></label>
+        <label><input type="checkbox"><span>Added to savings</span></label>
+        <label><input type="checkbox"><span>Contributed to VOO</span></label>
+        <label><input type="checkbox"><span>Stayed within spending target</span></label>
+        <label><input type="checkbox"><span>Set aside tax money if needed</span></label>
+      </div>
+
+      <div style="margin-top:18px" class="small">Weekly score</div>
+      <div class="score"><span id="score">0</span>/5</div>
+
+      <div class="buttons">
+        <button id="clearChecks">Clear check-in</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <section class="card">
+      <h2>Goals progress</h2>
+      <div class="goalgrid">
+        <div class="goal">
+          <b>Thanksgiving trip</b>
+          <span>Near-term cash goal</span>
+          <div class="progress"><span style="width:35%;background:var(--pink)"></span></div>
+        </div>
+        <div class="goal">
+          <b>Apartment fund</b>
+          <span>Move-in + cushion</span>
+          <div class="progress"><span style="width:28%;background:var(--accent)"></span></div>
+        </div>
+        <div class="goal">
+          <b>Emergency fund</b>
+          <span>Build gradually</span>
+          <div class="progress"><span style="width:20%;background:var(--peach)"></span></div>
+        </div>
+        <div class="goal">
+          <b>VOO</b>
+          <span>Long-term investing</span>
+          <div class="progress"><span style="width:15%;background:var(--teal)"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Monthly estimate</h2>
+      <div id="monthlyRows" style="display:grid;gap:10px"></div>
+    </section>
+  </div>
+
+  <div class="footer">SAVE • INVEST • BUILD • GROW • ACHIEVE</div>
+</div>
+
+<script>
+(() => {
+  const TOTAL = 720;
+
+  const defaults = [
+    {id:'bills',label:'Fixed bills',value:310,max:500,color:'#7b52ff'},
+    {id:'savings',label:'Savings',value:150,max:400,color:'#ff4fa3'},
+    {id:'spending',label:'Food, gas & personal',value:130,max:350,color:'#ff9b7d'},
+    {id:'tax',label:'Tax reserve',value:90,max:250,color:'#48b7ff'},
+    {id:'voo',label:'VOO investing',value:40,max:250,color:'#51dccd'}
+  ];
+
+  const saved = JSON.parse(localStorage.getItem('gregMoneyPlan') || 'null');
+  let data = saved && Array.isArray(saved.data) ? saved.data : defaults.map(x => ({...x}));
+
+  const checksSaved = JSON.parse(localStorage.getItem('gregMoneyChecks') || '[]');
+  const controls = document.getElementById('controls');
+  const checklist = [...document.querySelectorAll('#checklist input')];
+
+  checklist.forEach((c,i) => c.checked = !!checksSaved[i]);
+
+  const money = n => '$' + Math.round(n).toLocaleString();
+
+  function buildControls(){
+    controls.innerHTML = '';
+
+    data.forEach(item => {
+      const wrap = document.createElement('div');
+
+      wrap.innerHTML = `
+        <div class="rowhead">
+          <span>${item.label}</span>
+          <span>
+            <b id="${item.id}Val">${money(item.value)}</b>
+            <span id="${item.id}Pct" style="color:#9aa3bd"></span>
+          </span>
+        </div>
+        <input id="${item.id}" type="range" min="0" max="${item.max}" step="5" value="${item.value}">
+      `;
+
+      controls.appendChild(wrap);
+
+      wrap.querySelector('input').addEventListener('input', e => {
+        item.value = Number(e.target.value) || 0;
+        render();
+      });
+    });
+  }
+
+  function renderDonut(sum){
+    const g = document.getElementById('segments');
+    g.innerHTML = '';
+
+    const r = 78;
+    const c = 2 * Math.PI * r;
+    let offset = 0;
+
+    data.forEach(item => {
+      const len = item.value / TOTAL * c;
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx','110');
+      circle.setAttribute('cy','110');
+      circle.setAttribute('r',r);
+      circle.setAttribute('fill','none');
+      circle.setAttribute('stroke',item.color);
+      circle.setAttribute('stroke-width','30');
+      circle.setAttribute('stroke-dasharray',`${Math.max(0,len)} ${Math.max(0,c-len)}`);
+      circle.setAttribute('stroke-dashoffset',String(-offset));
+
+      g.appendChild(circle);
+      offset += len;
+    });
+
+    document.getElementById('allocVal').textContent = money(sum);
+  }
+
+  function render(){
+    const sum = data.reduce((a,b) => a + b.value, 0);
+    const left = TOTAL - sum;
+
+    document.getElementById('leftVal').textContent =
+      (left < 0 ? '-' : '') + money(Math.abs(left));
+
+    document.getElementById('leftVal').style.color =
+      left < 0 ? '#ff6b7d' : '#f6f7fb';
+
+    data.forEach(item => {
+      const v = document.getElementById(item.id + 'Val');
+      const p = document.getElementById(item.id + 'Pct');
+
+      if(v) v.textContent = money(item.value);
+      if(p) p.textContent = Math.round(item.value / TOTAL * 100) + '%';
+    });
+
+    renderDonut(sum);
+
+    const s = data.find(x => x.id === 'savings').value;
+    const v = data.find(x => x.id === 'voo').value;
+
+    document.getElementById('saveWeek').textContent = money(s);
+    document.getElementById('saveYear').textContent = money(s * 52) + '/yr';
+    document.getElementById('vooWeek').textContent = money(v);
+    document.getElementById('vooYear').textContent = money(v * 52) + '/yr';
+
+    document.getElementById('monthlyRows').innerHTML =
+      data.map(x => `
+        <div style="display:flex;justify-content:space-between;gap:10px;font-size:14px">
+          <span style="color:#9aa3bd">${x.label}</span>
+          <b>${money(x.value * 52 / 12)}</b>
+        </div>
+      `).join('');
+
+    document.getElementById('status').textContent =
+      left === 0
+        ? 'Perfectly allocated — every dollar has a job.'
+        : left > 0
+        ? money(left) + ' is still available to assign.'
+        : 'You are ' + money(-left) + ' over the $720 weekly limit.';
+  }
+
+  function updateScore(){
+    const score = checklist.filter(x => x.checked).length;
+    document.getElementById('score').textContent = score;
+
+    localStorage.setItem(
+      'gregMoneyChecks',
+      JSON.stringify(checklist.map(x => x.checked))
+    );
+  }
+
+  checklist.forEach(c => c.addEventListener('change', updateScore));
+
+  document.getElementById('savePlan').addEventListener('click', () => {
+    localStorage.setItem('gregMoneyPlan', JSON.stringify({data}));
+    document.getElementById('status').textContent = 'Saved on this device.';
+  });
+
+  document.getElementById('resetPlan').addEventListener('click', () => {
+    data = defaults.map(x => ({...x}));
+    buildControls();
+    render();
+    localStorage.removeItem('gregMoneyPlan');
+  });
+
+  document.getElementById('clearChecks').addEventListener('click', () => {
+    checklist.forEach(x => x.checked = false);
+    updateScore();
+  });
+
+  buildControls();
+  render();
+  updateScore();
+})();
+</script>
+</body>
+</html>

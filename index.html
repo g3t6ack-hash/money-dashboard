@@ -8,54 +8,319 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Money Plan">
   <title>Greg's Money Dashboard</title>
+
   <style>
     :root{
-      --bg:#10121f;--panel:#171a2b;--panel2:#1d2136;--text:#f6f7fb;--muted:#9aa3bd;
-      --line:#2b3150;--accent:#7b52ff;--pink:#ff4fa3;--peach:#ff9b7d;--blue:#48b7ff;--teal:#51dccd;
+      --bg:#10121f;
+      --panel:#171a2b;
+      --panel2:#1d2136;
+      --text:#f6f7fb;
+      --muted:#9aa3bd;
+      --line:#2b3150;
+      --accent:#7b52ff;
+      --pink:#ff4fa3;
+      --peach:#ff9b7d;
+      --blue:#48b7ff;
+      --teal:#51dccd;
+      --green:#45d392;
       --danger:#ff6b7d;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-      background:linear-gradient(180deg,#0e1020,#121526 42%,#0f1220);
+      background:linear-gradient(180deg,#0d0f1c,#121526 45%,#0f1220);
       color:var(--text);
     }
-    .wrap{max-width:980px;margin:0 auto;padding:20px 16px calc(32px + env(safe-area-inset-bottom))}
-    .hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
-    .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-    h1{font-size:clamp(28px,7vw,44px);margin:6px 0 4px;letter-spacing:.04em}
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:20px 16px calc(34px + env(safe-area-inset-bottom));
+    }
+
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    h1{
+      font-size:clamp(28px,7vw,44px);
+      margin:6px 0 4px;
+      letter-spacing:.03em;
+    }
+
     .sub{color:var(--muted);font-size:14px}
-    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#14182a;font-size:13px;white-space:nowrap}
-    .grid{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}
-    .card{background:linear-gradient(180deg,var(--panel),#141726);border:1px solid var(--line);border-radius:22px;padding:18px}
-    .card h2{margin:0 0 14px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#cbd2e8}
-    .topline{display:flex;justify-content:space-between;align-items:end;gap:12px}
-    .big{font-size:40px;font-weight:800;letter-spacing:-.03em}
-    .small{font-size:12px;color:var(--muted)}
-    .ringwrap{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:center}
+
+    .pill{
+      padding:10px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#14182a;
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.35fr .65fr;
+      gap:16px;
+    }
+
+    .card{
+      background:linear-gradient(180deg,var(--panel),#141726);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .card h2{
+      margin:0 0 14px;
+      font-size:15px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#cbd2e8;
+    }
+
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:12px;
+    }
+
+    .big{
+      font-size:40px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .ringwrap{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:18px;
+      align-items:center;
+      margin-top:16px;
+    }
+
     svg{width:100%;height:auto}
+
     .controls{display:grid;gap:14px}
-    .rowhead{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin-bottom:6px}
-    input[type=range]{width:100%;accent-color:var(--accent)}
-    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
-    .kpi{border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--panel2)}
-    .kpi .v{font-size:24px;font-weight:800;margin-top:4px}
+
+    .rowhead{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    input[type=range]{
+      width:100%;
+      accent-color:var(--accent);
+    }
+
+    input[type=number]{
+      width:100%;
+      border:1px solid var(--line);
+      background:#111522;
+      color:var(--text);
+      border-radius:12px;
+      padding:11px 12px;
+      font-size:16px;
+      outline:none;
+    }
+
+    input[type=number]:focus{
+      border-color:var(--accent);
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px;
+      background:var(--panel2);
+    }
+
+    .kpi .v{
+      font-size:24px;
+      font-weight:800;
+      margin-top:4px;
+    }
+
     .check{display:grid;gap:12px}
-    .check label{display:flex;gap:10px;align-items:flex-start;font-size:14px}
-    .check input{width:19px;height:19px;margin-top:1px}
-    .score{font-size:34px;font-weight:800}
-    .status{margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#13172a;font-size:13px}
-    .buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    button{appearance:none;border:1px solid var(--line);background:#202642;color:var(--text);padding:11px 14px;border-radius:13px;font-weight:700;font-size:14px}
-    button.primary{background:linear-gradient(90deg,var(--accent),#9658ff);border-color:transparent}
-    .progress{height:10px;background:#252b46;border-radius:999px;overflow:hidden;margin-top:8px}
-    .progress>span{display:block;height:100%;border-radius:999px}
-    .goalgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    .goal{border:1px solid var(--line);border-radius:16px;padding:13px}
-    .goal b{display:block;font-size:14px}
-    .goal span{font-size:12px;color:var(--muted)}
-    .footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;margin-top:18px}
+
+    .check label{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-size:14px;
+    }
+
+    .check input{
+      width:19px;
+      height:19px;
+      margin-top:1px;
+    }
+
+    .score{
+      font-size:34px;
+      font-weight:800;
+    }
+
+    .status{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#13172a;
+      font-size:13px;
+    }
+
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    button{
+      appearance:none;
+      border:1px solid var(--line);
+      background:#202642;
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:13px;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    button.primary{
+      background:linear-gradient(90deg,var(--accent),#9658ff);
+      border-color:transparent;
+    }
+
+    .goalgrid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .goal{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      background:#151929;
+    }
+
+    .goal-title{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .goal-title b{font-size:14px}
+    .goal-title span{font-size:12px;color:var(--muted)}
+
+    .goal-inputs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .goal-inputs label{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .goal-inputs label span{
+      display:block;
+      margin-bottom:5px;
+    }
+
+    .progress{
+      height:11px;
+      background:#252b46;
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:10px;
+    }
+
+    .progress>span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+      transition:width .25s ease;
+    }
+
+    .history-wrap{
+      overflow-x:auto;
+      padding-bottom:4px;
+    }
+
+    .history-svg{
+      min-width:620px;
+      width:100%;
+    }
+
+    .history-empty{
+      color:var(--muted);
+      font-size:13px;
+      padding:14px 0 4px;
+    }
+
+    .snapshot-list{
+      display:grid;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .snapshot{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:12px;
+      background:#131726;
+    }
+
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.2em;
+      margin-top:18px;
+    }
+
     @media(max-width:760px){
       .grid{grid-template-columns:1fr}
       .ringwrap{grid-template-columns:1fr}
@@ -65,8 +330,10 @@
     }
   </style>
 </head>
+
 <body>
 <div class="wrap">
+
   <div class="hero">
     <div>
       <div class="eyebrow">Weekly money plan</div>
@@ -77,27 +344,31 @@
   </div>
 
   <div class="grid">
+
     <section class="card">
       <div class="topline">
         <div>
           <div class="small">Weekly income target</div>
-          <div class="big">$<span id="incomeVal">720</span></div>
+          <div class="big">$720</div>
         </div>
+
         <div style="text-align:right">
           <div class="small">Unallocated</div>
           <div style="font-size:24px;font-weight:800" id="leftVal">$0</div>
         </div>
       </div>
 
-      <div class="ringwrap" style="margin-top:16px">
+      <div class="ringwrap">
+
         <div class="donut">
-          <svg viewBox="0 0 220 220" aria-label="Weekly budget donut chart">
+          <svg viewBox="0 0 220 220" aria-label="Weekly budget allocation">
             <circle cx="110" cy="110" r="78" fill="none" stroke="#252b46" stroke-width="30"/>
             <g id="segments" transform="rotate(-90 110 110)"></g>
             <text x="110" y="103" text-anchor="middle" fill="#9aa3bd" font-size="13">Allocated</text>
             <text id="allocVal" x="110" y="132" text-anchor="middle" fill="#f6f7fb" font-size="28" font-weight="800">$720</text>
           </svg>
         </div>
+
         <div class="controls" id="controls"></div>
       </div>
 
@@ -107,6 +378,7 @@
           <div class="v" id="saveWeek">$150</div>
           <div class="small" id="saveYear">$7,800/yr</div>
         </div>
+
         <div class="kpi">
           <div class="small">VOO / week</div>
           <div class="v" id="vooWeek">$40</div>
@@ -115,14 +387,16 @@
       </div>
 
       <div class="status" id="status">Every dollar has a job.</div>
+
       <div class="buttons">
-        <button class="primary" id="savePlan">Save changes</button>
-        <button id="resetPlan">Reset</button>
+        <button class="primary" id="savePlan">Save weekly plan</button>
+        <button id="resetPlan">Reset weekly plan</button>
       </div>
     </section>
 
     <aside class="card">
       <h2>Saturday check-in</h2>
+
       <div class="check" id="checklist">
         <label><input type="checkbox"><span>Stayed within the bill reserve</span></label>
         <label><input type="checkbox"><span>Added to savings</span></label>
@@ -135,35 +409,21 @@
       <div class="score"><span id="score">0</span>/5</div>
 
       <div class="buttons">
+        <button class="primary" id="saveSnapshot">Save Saturday snapshot</button>
         <button id="clearChecks">Clear check-in</button>
       </div>
     </aside>
+
   </div>
 
   <div class="grid" style="margin-top:16px">
+
     <section class="card">
       <h2>Goals progress</h2>
-      <div class="goalgrid">
-        <div class="goal">
-          <b>Thanksgiving trip</b>
-          <span>Near-term cash goal</span>
-          <div class="progress"><span style="width:35%;background:var(--pink)"></span></div>
-        </div>
-        <div class="goal">
-          <b>Apartment fund</b>
-          <span>Move-in + cushion</span>
-          <div class="progress"><span style="width:28%;background:var(--accent)"></span></div>
-        </div>
-        <div class="goal">
-          <b>Emergency fund</b>
-          <span>Build gradually</span>
-          <div class="progress"><span style="width:20%;background:var(--peach)"></span></div>
-        </div>
-        <div class="goal">
-          <b>VOO</b>
-          <span>Long-term investing</span>
-          <div class="progress"><span style="width:15%;background:var(--teal)"></span></div>
-        </div>
+      <div class="goalgrid" id="goalGrid"></div>
+
+      <div class="buttons">
+        <button class="primary" id="saveGoals">Save goals</button>
       </div>
     </section>
 
@@ -171,16 +431,45 @@
       <h2>Monthly estimate</h2>
       <div id="monthlyRows" style="display:grid;gap:10px"></div>
     </section>
+
   </div>
 
-  <div class="footer">SAVE • INVEST • BUILD • GROW • ACHIEVE</div>
+  <section class="card" style="margin-top:16px">
+    <div class="topline">
+      <div>
+        <h2 style="margin-bottom:4px">Weekly history</h2>
+        <div class="small">Snapshots you save on Saturdays stay on this iPhone.</div>
+      </div>
+      <div class="small"><span id="snapshotCount">0</span> saved</div>
+    </div>
+
+    <div class="history-wrap">
+      <svg id="historyChart" class="history-svg" viewBox="0 0 700 280" aria-label="Weekly savings and VOO history"></svg>
+    </div>
+
+    <div id="historyEmpty" class="history-empty">
+      No weekly snapshots yet. Save your first one on Saturday.
+    </div>
+
+    <div id="snapshotList" class="snapshot-list"></div>
+
+    <div class="buttons">
+      <button id="clearHistory">Clear history</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    SAVE • INVEST • BUILD • GROW • ACHIEVE
+  </div>
+
 </div>
 
 <script>
 (() => {
+
   const TOTAL = 720;
 
-  const defaults = [
+  const weeklyDefaults = [
     {id:'bills',label:'Fixed bills',value:310,max:500,color:'#7b52ff'},
     {id:'savings',label:'Savings',value:150,max:400,color:'#ff4fa3'},
     {id:'spending',label:'Food, gas & personal',value:130,max:350,color:'#ff9b7d'},
@@ -188,21 +477,81 @@
     {id:'voo',label:'VOO investing',value:40,max:250,color:'#51dccd'}
   ];
 
-  const saved = JSON.parse(localStorage.getItem('gregMoneyPlan') || 'null');
-  let data = saved && Array.isArray(saved.data) ? saved.data : defaults.map(x => ({...x}));
+  const goalDefaults = [
+    {
+      id:'thanksgiving',
+      label:'Thanksgiving trip',
+      current:0,
+      target:700,
+      color:'#ff4fa3'
+    },
+    {
+      id:'apartment',
+      label:'Apartment fund',
+      current:0,
+      target:6000,
+      color:'#7b52ff'
+    },
+    {
+      id:'emergency',
+      label:'Emergency fund',
+      current:0,
+      target:3000,
+      color:'#ff9b7d'
+    },
+    {
+      id:'vooGoal',
+      label:'VOO',
+      current:0,
+      target:5000,
+      color:'#51dccd'
+    }
+  ];
 
-  const checksSaved = JSON.parse(localStorage.getItem('gregMoneyChecks') || '[]');
+  const savedWeekly = safeParse('gregMoneyPlan');
+  let weeklyData =
+    savedWeekly && Array.isArray(savedWeekly.data)
+      ? savedWeekly.data
+      : weeklyDefaults.map(x => ({...x}));
+
+  const savedGoals = safeParse('gregMoneyGoals');
+  let goals =
+    savedGoals && Array.isArray(savedGoals)
+      ? savedGoals
+      : goalDefaults.map(x => ({...x}));
+
+  let history = safeParse('gregMoneyHistory');
+  if(!Array.isArray(history)) history = [];
+
   const controls = document.getElementById('controls');
   const checklist = [...document.querySelectorAll('#checklist input')];
 
-  checklist.forEach((c,i) => c.checked = !!checksSaved[i]);
+  const savedChecks = safeParse('gregMoneyChecks') || [];
+  checklist.forEach((c,i) => c.checked = !!savedChecks[i]);
 
-  const money = n => '$' + Math.round(n).toLocaleString();
+  function safeParse(key){
+    try{
+      return JSON.parse(localStorage.getItem(key) || 'null');
+    }catch{
+      return null;
+    }
+  }
 
-  function buildControls(){
+  function money(n){
+    const v = Number(n);
+    return '$' + Math.round(Number.isFinite(v) ? v : 0).toLocaleString();
+  }
+
+  function clamp(n,min,max){
+    const v = Number(n);
+    if(!Number.isFinite(v)) return min;
+    return Math.min(max, Math.max(min, v));
+  }
+
+  function buildWeeklyControls(){
     controls.innerHTML = '';
 
-    data.forEach(item => {
+    weeklyData.forEach(item => {
       const wrap = document.createElement('div');
 
       wrap.innerHTML = `
@@ -213,14 +562,24 @@
             <span id="${item.id}Pct" style="color:#9aa3bd"></span>
           </span>
         </div>
-        <input id="${item.id}" type="range" min="0" max="${item.max}" step="5" value="${item.value}">
+
+        <input
+          type="range"
+          min="0"
+          max="${item.max}"
+          step="5"
+          value="${item.value}"
+          aria-label="${item.label}"
+        >
       `;
 
       controls.appendChild(wrap);
 
-      wrap.querySelector('input').addEventListener('input', e => {
-        item.value = Number(e.target.value) || 0;
-        render();
+      const slider = wrap.querySelector('input');
+
+      slider.addEventListener('input', e => {
+        item.value = clamp(e.target.value,0,item.max);
+        renderWeekly();
       });
     });
   }
@@ -230,20 +589,26 @@
     g.innerHTML = '';
 
     const r = 78;
-    const c = 2 * Math.PI * r;
+    const circumference = 2 * Math.PI * r;
     let offset = 0;
 
-    data.forEach(item => {
-      const len = item.value / TOTAL * c;
+    weeklyData.forEach(item => {
+      const share = item.value / TOTAL;
+      const len = Math.max(0, share * circumference);
 
-      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      const circle =
+        document.createElementNS('http://www.w3.org/2000/svg','circle');
+
       circle.setAttribute('cx','110');
       circle.setAttribute('cy','110');
       circle.setAttribute('r',r);
       circle.setAttribute('fill','none');
       circle.setAttribute('stroke',item.color);
       circle.setAttribute('stroke-width','30');
-      circle.setAttribute('stroke-dasharray',`${Math.max(0,len)} ${Math.max(0,c-len)}`);
+      circle.setAttribute(
+        'stroke-dasharray',
+        `${len} ${Math.max(0,circumference-len)}`
+      );
       circle.setAttribute('stroke-dashoffset',String(-offset));
 
       g.appendChild(circle);
@@ -253,36 +618,49 @@
     document.getElementById('allocVal').textContent = money(sum);
   }
 
-  function render(){
-    const sum = data.reduce((a,b) => a + b.value, 0);
+  function renderWeekly(){
+
+    const sum = weeklyData.reduce((a,b) => a + Number(b.value || 0), 0);
     const left = TOTAL - sum;
 
-    document.getElementById('leftVal').textContent =
+    const leftEl = document.getElementById('leftVal');
+
+    leftEl.textContent =
       (left < 0 ? '-' : '') + money(Math.abs(left));
 
-    document.getElementById('leftVal').style.color =
+    leftEl.style.color =
       left < 0 ? '#ff6b7d' : '#f6f7fb';
 
-    data.forEach(item => {
-      const v = document.getElementById(item.id + 'Val');
-      const p = document.getElementById(item.id + 'Pct');
+    weeklyData.forEach(item => {
+      const valueEl = document.getElementById(item.id + 'Val');
+      const pctEl = document.getElementById(item.id + 'Pct');
 
-      if(v) v.textContent = money(item.value);
-      if(p) p.textContent = Math.round(item.value / TOTAL * 100) + '%';
+      if(valueEl) valueEl.textContent = money(item.value);
+
+      if(pctEl){
+        pctEl.textContent =
+          Math.round((item.value / TOTAL) * 100) + '%';
+      }
     });
 
     renderDonut(sum);
 
-    const s = data.find(x => x.id === 'savings').value;
-    const v = data.find(x => x.id === 'voo').value;
+    const savings =
+      weeklyData.find(x => x.id === 'savings').value;
 
-    document.getElementById('saveWeek').textContent = money(s);
-    document.getElementById('saveYear').textContent = money(s * 52) + '/yr';
-    document.getElementById('vooWeek').textContent = money(v);
-    document.getElementById('vooYear').textContent = money(v * 52) + '/yr';
+    const voo =
+      weeklyData.find(x => x.id === 'voo').value;
+
+    document.getElementById('saveWeek').textContent = money(savings);
+    document.getElementById('saveYear').textContent =
+      money(savings * 52) + '/yr';
+
+    document.getElementById('vooWeek').textContent = money(voo);
+    document.getElementById('vooYear').textContent =
+      money(voo * 52) + '/yr';
 
     document.getElementById('monthlyRows').innerHTML =
-      data.map(x => `
+      weeklyData.map(x => `
         <div style="display:flex;justify-content:space-between;gap:10px;font-size:14px">
           <span style="color:#9aa3bd">${x.label}</span>
           <b>${money(x.value * 52 / 12)}</b>
@@ -297,8 +675,105 @@
         : 'You are ' + money(-left) + ' over the $720 weekly limit.';
   }
 
+  function buildGoals(){
+
+    const grid = document.getElementById('goalGrid');
+    grid.innerHTML = '';
+
+    goals.forEach(goal => {
+
+      const pct =
+        goal.target > 0
+          ? Math.min(100, Math.round(goal.current / goal.target * 100))
+          : 0;
+
+      const card = document.createElement('div');
+      card.className = 'goal';
+
+      card.innerHTML = `
+        <div class="goal-title">
+          <b>${goal.label}</b>
+          <span id="${goal.id}Pct">${pct}%</span>
+        </div>
+
+        <div class="progress">
+          <span
+            id="${goal.id}Bar"
+            style="width:${pct}%;background:${goal.color}"
+          ></span>
+        </div>
+
+        <div class="goal-inputs">
+          <label>
+            <span>Current</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value="${goal.current}"
+              data-field="current"
+              data-id="${goal.id}"
+            >
+          </label>
+
+          <label>
+            <span>Target</span>
+            <input
+              type="number"
+              min="1"
+              step="1"
+              value="${goal.target}"
+              data-field="target"
+              data-id="${goal.id}"
+            >
+          </label>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    grid.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', e => {
+
+        const id = e.target.dataset.id;
+        const field = e.target.dataset.field;
+        const goal = goals.find(g => g.id === id);
+
+        if(!goal) return;
+
+        if(field === 'current'){
+          goal.current = Math.max(0, Number(e.target.value) || 0);
+        }
+
+        if(field === 'target'){
+          goal.target = Math.max(1, Number(e.target.value) || 1);
+        }
+
+        updateGoalVisual(goal);
+      });
+    });
+  }
+
+  function updateGoalVisual(goal){
+
+    const pct =
+      goal.target > 0
+        ? Math.min(100, Math.round(goal.current / goal.target * 100))
+        : 0;
+
+    const pctEl = document.getElementById(goal.id + 'Pct');
+    const barEl = document.getElementById(goal.id + 'Bar');
+
+    if(pctEl) pctEl.textContent = pct + '%';
+    if(barEl) barEl.style.width = pct + '%';
+  }
+
   function updateScore(){
-    const score = checklist.filter(x => x.checked).length;
+
+    const score =
+      checklist.filter(x => x.checked).length;
+
     document.getElementById('score').textContent = score;
 
     localStorage.setItem(
@@ -307,29 +782,317 @@
     );
   }
 
-  checklist.forEach(c => c.addEventListener('change', updateScore));
+  function getGoalCurrent(id){
+    const g = goals.find(x => x.id === id);
+    return g ? Number(g.current || 0) : 0;
+  }
 
-  document.getElementById('savePlan').addEventListener('click', () => {
-    localStorage.setItem('gregMoneyPlan', JSON.stringify({data}));
-    document.getElementById('status').textContent = 'Saved on this device.';
-  });
+  function saveSnapshot(){
 
-  document.getElementById('resetPlan').addEventListener('click', () => {
-    data = defaults.map(x => ({...x}));
-    buildControls();
-    render();
-    localStorage.removeItem('gregMoneyPlan');
-  });
+    const today = new Date();
 
-  document.getElementById('clearChecks').addEventListener('click', () => {
-    checklist.forEach(x => x.checked = false);
-    updateScore();
-  });
+    const label =
+      today.toLocaleDateString('en-US',{
+        month:'short',
+        day:'numeric'
+      });
 
-  buildControls();
-  render();
+    const iso =
+      today.toISOString().slice(0,10);
+
+    const snapshot = {
+      date:iso,
+      label,
+      savings:getGoalCurrent('apartment') + getGoalCurrent('emergency') + getGoalCurrent('thanksgiving'),
+      voo:getGoalCurrent('vooGoal'),
+      score:checklist.filter(x => x.checked).length
+    };
+
+    const existingIndex =
+      history.findIndex(x => x.date === iso);
+
+    if(existingIndex >= 0){
+      history[existingIndex] = snapshot;
+    }else{
+      history.push(snapshot);
+    }
+
+    history = history
+      .sort((a,b) => a.date.localeCompare(b.date))
+      .slice(-12);
+
+    localStorage.setItem(
+      'gregMoneyHistory',
+      JSON.stringify(history)
+    );
+
+    renderHistory();
+
+    document.getElementById('status').textContent =
+      'Saturday snapshot saved.';
+  }
+
+  function renderHistory(){
+
+    document.getElementById('snapshotCount').textContent =
+      history.length;
+
+    const svg =
+      document.getElementById('historyChart');
+
+    const empty =
+      document.getElementById('historyEmpty');
+
+    const list =
+      document.getElementById('snapshotList');
+
+    svg.innerHTML = '';
+    list.innerHTML = '';
+
+    if(history.length === 0){
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+
+    const width = 700;
+    const height = 280;
+    const pad = 46;
+
+    const maxVal =
+      Math.max(
+        100,
+        ...history.flatMap(x => [x.savings, x.voo])
+      );
+
+    const xStep =
+      history.length === 1
+        ? 0
+        : (width - pad * 2) / (history.length - 1);
+
+    const y = value =>
+      height - pad -
+      (value / maxVal) * (height - pad * 2);
+
+    const x = i =>
+      history.length === 1
+        ? width / 2
+        : pad + i * xStep;
+
+    function add(tag,attrs){
+      const el =
+        document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          tag
+        );
+
+      Object.entries(attrs).forEach(([k,v]) =>
+        el.setAttribute(k,v)
+      );
+
+      svg.appendChild(el);
+      return el;
+    }
+
+    [0,.25,.5,.75,1].forEach(frac => {
+
+      const yy =
+        height - pad -
+        frac * (height - pad * 2);
+
+      add('line',{
+        x1:pad,
+        x2:width-pad,
+        y1:yy,
+        y2:yy,
+        stroke:'#2b3150',
+        'stroke-width':'1'
+      });
+
+      const text = add('text',{
+        x:8,
+        y:yy+4,
+        fill:'#9aa3bd',
+        'font-size':'11'
+      });
+
+      text.textContent =
+        money(maxVal * frac);
+    });
+
+    const savingsPoints =
+      history.map((d,i) =>
+        `${x(i)},${y(d.savings)}`
+      ).join(' ');
+
+    const vooPoints =
+      history.map((d,i) =>
+        `${x(i)},${y(d.voo)}`
+      ).join(' ');
+
+    add('polyline',{
+      points:savingsPoints,
+      fill:'none',
+      stroke:'#ff4fa3',
+      'stroke-width':'4',
+      'stroke-linecap':'round',
+      'stroke-linejoin':'round'
+    });
+
+    add('polyline',{
+      points:vooPoints,
+      fill:'none',
+      stroke:'#51dccd',
+      'stroke-width':'4',
+      'stroke-linecap':'round',
+      'stroke-linejoin':'round'
+    });
+
+    history.forEach((d,i) => {
+
+      add('circle',{
+        cx:x(i),
+        cy:y(d.savings),
+        r:'5',
+        fill:'#ff4fa3'
+      });
+
+      add('circle',{
+        cx:x(i),
+        cy:y(d.voo),
+        r:'5',
+        fill:'#51dccd'
+      });
+
+      const text = add('text',{
+        x:x(i),
+        y:height-12,
+        fill:'#9aa3bd',
+        'font-size':'11',
+        'text-anchor':'middle'
+      });
+
+      text.textContent = d.label;
+    });
+
+    const legend1 = add('text',{
+      x:pad,
+      y:18,
+      fill:'#ff4fa3',
+      'font-size':'12'
+    });
+    legend1.textContent = '● Cash goals';
+
+    const legend2 = add('text',{
+      x:145,
+      y:18,
+      fill:'#51dccd',
+      'font-size':'12'
+    });
+    legend2.textContent = '● VOO';
+
+    history
+      .slice()
+      .reverse()
+      .forEach(d => {
+
+        const row =
+          document.createElement('div');
+
+        row.className = 'snapshot';
+
+        row.innerHTML = `
+          <span>${d.label} • score ${d.score}/5</span>
+          <span>${money(d.savings)} cash • ${money(d.voo)} VOO</span>
+        `;
+
+        list.appendChild(row);
+      });
+  }
+
+  checklist.forEach(c =>
+    c.addEventListener('change',updateScore)
+  );
+
+  document
+    .getElementById('savePlan')
+    .addEventListener('click',() => {
+
+      localStorage.setItem(
+        'gregMoneyPlan',
+        JSON.stringify({data:weeklyData})
+      );
+
+      document.getElementById('status').textContent =
+        'Weekly plan saved on this iPhone.';
+    });
+
+  document
+    .getElementById('resetPlan')
+    .addEventListener('click',() => {
+
+      weeklyData =
+        weeklyDefaults.map(x => ({...x}));
+
+      localStorage.removeItem('gregMoneyPlan');
+
+      buildWeeklyControls();
+      renderWeekly();
+    });
+
+  document
+    .getElementById('saveGoals')
+    .addEventListener('click',() => {
+
+      localStorage.setItem(
+        'gregMoneyGoals',
+        JSON.stringify(goals)
+      );
+
+      document.getElementById('status').textContent =
+        'Goal amounts saved.';
+    });
+
+  document
+    .getElementById('saveSnapshot')
+    .addEventListener('click',() => {
+
+      localStorage.setItem(
+        'gregMoneyGoals',
+        JSON.stringify(goals)
+      );
+
+      saveSnapshot();
+    });
+
+  document
+    .getElementById('clearChecks')
+    .addEventListener('click',() => {
+
+      checklist.forEach(x => x.checked = false);
+      updateScore();
+    });
+
+  document
+    .getElementById('clearHistory')
+    .addEventListener('click',() => {
+
+      if(!confirm('Clear all saved weekly history?')) return;
+
+      history = [];
+      localStorage.removeItem('gregMoneyHistory');
+      renderHistory();
+    });
+
+  buildWeeklyControls();
+  renderWeekly();
+  buildGoals();
   updateScore();
+  renderHistory();
+
 })();
 </script>
+
 </body>
 </html>
